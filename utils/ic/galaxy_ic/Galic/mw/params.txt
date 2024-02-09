@@ -1,0 +1,12 @@
+CC=10
+V200(km/s)=150
+LAMBDA=0.04
+MD=0.04
+JD=0.04
+MB=0.004
+DiskHeight=0.1
+BulgeSize=0.1
+
+R200=205.479 kpc
+H=3.43218 kpc
+

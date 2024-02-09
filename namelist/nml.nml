@@ -1,0 +1,156 @@
+&RUN_PARAMS 
+cosmo=.false.
+pic=.true.
+poisson=.true.
+hydro=.true.
+nrestart=999
+nremap=1
+nsubcycle=1,1,15*2
+ncontrol=1
+rt=.true.
+/
+&OUTPUT_PARAMS
+foutput=500000
+noutput=17
+tout=0.067, 0.335, 0.671, 1.342, 2.01, 2.68, 3.3557, 6.7114, 10.0671, 13.4228, 16.7785, 20.12, 23.48, 26.83, 30.19, 33.54, 34.55
+     ! 1, 5, 10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 515 Myr
+/
+&INIT_PARAMS
+filetype='ascii'
+initfile(1)='/home/jrosdahl/runs/disk_ICs/G9_ICs/IC_med/'
+!aexp_ini=1.0
+B_ave=5.2e-3
+/
+&AMR_PARAMS
+levelmin=7
+levelmax=14
+ngridmax=200000
+npartmax=400000
+boxlen=300d0
+/
+&POISSON_PARAMS 
+epsilon=1e-4
+/
+&BOUNDARY_PARAMS
+nboundary=6
+bound_type= 2, 2,  2,  2,  2,  2
+ibound_min=-1, 1, -1, -1, -1, -1
+ibound_max=-1, 1,  1,  1,  1,  1
+jbound_min= 0, 0, -1,  1, -1, -1
+jbound_max= 0, 0, -1,  1,  1,  1
+kbound_min= 0, 0,  0,  0, -1,  1
+kbound_max= 0, 0,  0,  0, -1,  1
+/
+&COOLING_PARAMS
+cooling=.true.
+z_ave=1d-1
+neq_chem=.false.
+metal=.true.
+haardt_madau=.true.                 !!! default false in eor and cral
+self_shielding=.true.
+/
+&SF_PARAMS
+star_maker='FK2'                    !!! default 'FK2'' in eor and cral
+!m_star=0.6d0                       !!! default -1 in eor and cral
+n_star=10.0                         !!! default 0.1 in eor and cral
+T2_star=500d0                       !!! default 0 in eor and cral
+g_star=1.0                          !!! default 1.6 in eor and cral
+eps_star=0.02                       !!! default is 0 in eor and cral
+T2thres_SF=3d3                      !!! 2d4 by default in cral, 1d10 in eor
+sf_lam=1                            !!! -1 by default in cral, 1 in eor
+sf_lmax=.true.
+! fstar_min 1 in eor and cral, sf_lam interesting for future ?
+/
+&FEEDBACK_PARAMS
+feedback_model='mechanical'         !!! thermal by default in cral
+eta_sn=0.2                          !!! 0.2 default in eor and cral
+yield=0.0                           !!! 0 default in eor and cral
+E_SNII=1.0d51                       !!! 1d51 default in eor and cral
+M_SNII=20                           !!! 10 default in eor and cral
+t_sne=5d0                           !!! 10 by default in eor and cral
+log_mfb=.true.
+!f_w 0 in eor and cral
+/
+&HYDRO_PARAMS
+gamma=1.66666667
+!gamma_rad=1.333333
+courant_factor=0.8
+slope_type=1
+scheme='muscl'
+pressure_fix=.true.
+beta_fix=0.5
+riemann='hlld'                  !Was hllc for hydro solver
+riemann2d='hlld'                !Used for induction eq only
+smallcr=1.0d-15
+/
+&MHD_PARAMS
+cooling_cr=.false.
+epsilon_diff=1d-4
+Dcr=1.0d28
+cr_c_fraction=1d-3
+variable_cr_vmax=.true.
+mom_streaming_heating=.true.
+mom_streaming_diffusion=.true.
+cr_f_taucell=0.5
+cr_nsubcycle=10
+fecr=0.1
+force_mom_cr_advect=.true.
+/
+&REFINE_PARAMS
+mass_sph=1d-6  ! 1000 solar masses = 1.666 stellar particle masses.
+m_refine=10*8. ! Use 8 particles for med, 3 for low
+interpol_type=0
+interpol_var=1
+jeans_refine=20*4.0
+/
+&MERGER_PARAMS
+rad_profile='exponential'
+z_profile='gaussian'
+gal_center1=0.0,0.0,0.0
+gal_center2=1d5,1d5,1d5 ! Well outside the box
+mag_topology='test'
+Mgas_disk1=1.748962
+Mgas_disk2=0d0
+typ_radius1=1.48728
+typ_radius2=1.48728
+cut_radius1=11.005872 
+cut_radius2=11.005872 
+typ_height1=0.148728
+typ_height2=0.148728
+cut_height1=0.62465760 
+cut_height2=0.62465760 
+IG_density_factor=1d0
+Vcirc_dat_file1='/home/jrosdahl/runs/disk_ICs/G9_ICs/IC_med/Vcirc.dat'
+Vcirc_dat_file2='/home/jrosdahl/runs/disk_ICs/G9_ICs/IC_med/Vcirc.dat'
+ic_part_file_gal1='ic_part'
+ic_part_file_gal2='ic_part'
+gal_axis1=0,0,1
+gal_axis2=0,0,1
+Vgal1=0.0,0.0,0.0
+Vgal2=0.0,0.0,0.0
+
+/
+&MOVIE_PARAMS
+movie = .true. 
+tstartmov=0.0
+tendmov = 34.55 
+imovout=1500
+imov=1
+nw_frame=500 ! Movie frame resolution
+nh_frame=500
+levelmax_frame=14
+xcentre_frame=150.,0.,0.,0.,150.,0.,0.,0.
+ycentre_frame=150.,0.,0.,0.,150.,0.,0.,0.
+zcentre_frame=150.,0.,0.,0.,150.,0.,0.,0.
+deltax_frame=15.,0,15.,0
+deltay_frame=15.,0,15.,0
+deltaz_frame=15.,0,15.,0
+proj_axis='zx'
+movie_vars_txt = 'dens', 'temp', 'stars', 'crflx_P', 'P'
+perspective_camera = .true.,  .true.
+shader_frame =       'square', 'square'
+dtheta_camera=       0.,        0.
+phi_camera=          0.,        0.
+focal_camera=        100.,        100.
+dist_camera=         100.,        100.
+/

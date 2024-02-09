@@ -1,0 +1,16 @@
+h                = 1.0
+Lbox             = 821.917808
+ -Ndark_matter   = 100000
+ -Mass_dm        = 1255.067771
+ -Nstars_bulge   = 10000
+ -Mass_starsbulge= 4.298768
+ -Nstars_disk    = 100000
+ -Mass_starsdisk = 34.390144
+ -Ngaz           = 100000
+ -Mass_gaz       = 8.597536
+ -Nstar_form     = 0
+ -Mass_sf        = 0.0
+ -Nblack_holes   = 0
+ -Mass_bh        = 0.0
+ -Ntot           = 310000
+ -Mass_tot       = 1302.354219
