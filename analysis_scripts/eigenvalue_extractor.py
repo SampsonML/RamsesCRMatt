@@ -26,10 +26,12 @@ def inertiaTensor(filename):
 
     # load the file in 
     ds = yt.load(filename)
-
+    t = np.array( ds.current_time.in_units('Myr') )
+    
     # grab the cr energy density and x,y,z values
     data = ds.all_data()
-    cr_data = np.array( data[("ramses","hydro_CRegy_01")] )
+    cr_data_raw = np.array( data[("ramses","hydro_CRegy_01")] ) 
+    cr_data = cr_data_raw / np.max(cr_data_raw)
     x_values = np.array( data[("ramses","x")] )
     y_values = np.array( data[("ramses","y")] )
     z_values = np.array( data[("ramses","z")] )
@@ -59,4 +61,4 @@ def inertiaTensor(filename):
     # calculate the eigenvalues
     eigs, evecs = np.linalg.eig(I_Ecr)
     
-    return I_Ecr, eigs, evecs
+    return I_Ecr, eigs, evecs, t
