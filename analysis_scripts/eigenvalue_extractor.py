@@ -28,11 +28,11 @@ def inertiaTensor(filename):
     ds = yt.load(filename)
 
     # grab the cr energy density and x,y,z values
-    my_sphere = ds.sphere("c", (20.0, "pc"))
-    cr_data   = my_sphere.to_dataframe(("ramses","hydro_CRegy_01"))['hydro_CRegy_01']
-    x_values  = my_sphere.to_dataframe(("ramses","x"))['x']
-    y_values  = my_sphere.to_dataframe(("ramses","y"))['y']
-    z_values  = my_sphere.to_dataframe(("ramses","z"))['z']
+    data = ds.all_data()
+    cr_data = np.array( data[("ramses","hydro_CRegy_01")] )
+    x_values = np.array( data[("ramses","x")] )
+    y_values = np.array( data[("ramses","y")] )
+    z_values = np.array( data[("ramses","z")] )
 
     # calculate the moment of inertia tensor
     I_Ecr = np.zeros((3, 3), dtype=float)
