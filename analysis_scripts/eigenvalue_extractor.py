@@ -34,6 +34,16 @@ def inertiaTensor(filename):
     x_values = np.array( data[("ramses","x")] )
     y_values = np.array( data[("ramses","y")] )
     z_values = np.array( data[("ramses","z")] )
+    
+    # Cell volume
+    dx = np.array( data[("ramses","dx")] )
+    cell_volume = dx**3
+    E_tot = 0
+    
+    # max values
+    x_mid = np.max(x_values) / 2
+    y_mid = np.max(y_values) / 2
+    z_mid = np.max(z_values) / 2
 
     # calculate the moment of inertia tensor
     I_Ecr = np.zeros((3, 3), dtype=float)
@@ -41,21 +51,26 @@ def inertiaTensor(filename):
     for idx, rho_cr in enumerate(cr_data):
 
         # column 1
-        I_Ecr[0,0] += rho_cr * ((x_values[idx]) * (x_values[idx])) 
-        I_Ecr[0,1] += rho_cr * ((x_values[idx]) * (y_values[idx])) 
-        I_Ecr[0,2] += rho_cr * ((x_values[idx]) * (z_values[idx])) 
+        I_Ecr[0,0] += rho_cr * ((x_values[idx] - x_mid) * (x_values[idx]- x_mid)) 
+        I_Ecr[0,1] += rho_cr * ((x_values[idx] - x_mid) * (y_values[idx]- y_mid)) 
+        I_Ecr[0,2] += rho_cr * ((x_values[idx] - x_mid) * (z_values[idx]- z_mid)) 
 
         # column 2
-        I_Ecr[1,1] += rho_cr * ((y_values[idx]) * (y_values[idx])) 
-        I_Ecr[1,2] += rho_cr * ((y_values[idx]) * (z_values[idx])) 
+        I_Ecr[1,1] += rho_cr * ((y_values[idx]- y_mid) * (y_values[idx]- y_mid)) 
+        I_Ecr[1,2] += rho_cr * ((y_values[idx]- y_mid) * (z_values[idx]- z_mid)) 
 
         # column 3
-        I_Ecr[2,2] += rho_cr * ((z_values[idx]) * (z_values[idx])) 
+        I_Ecr[2,2] += rho_cr * ((z_values[idx]- z_mid) * (z_values[idx]- z_mid)) 
+        
+        E_tot += rho_cr * cell_volume
 
     # symmetric properties
     I_Ecr[1,0] = I_Ecr[0,1] 
     I_Ecr[2,0] = I_Ecr[0,2] 
     I_Ecr[2,1] = I_Ecr[1,2] 
+    
+    # Divide by total energy
+    I_Ecr /= E_tot
 
     # calculate the eigenvalues
     eigs, evecs = np.linalg.eig(I_Ecr)
